@@ -18,16 +18,12 @@ const Start = ({ navigation }) => {
                 <Text style={styles.text}>Choose the background colour</Text>
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity style={styles.bg1} onPress={() => setColour("#090C08")}>
-                        <Text style={styles.bgText}>Select</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.bg2} onPress={() => setColour("#474056")}>
-                        <Text style={styles.bgText}>Select</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.bg3} onPress={() => setColour("#B79880")}>
-                        <Text style={styles.bgText}>Select</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.bg4} onPress={() => setColour("#8DA7C8")}>
-                        <Text style={styles.bgText}>Select</Text>
                     </TouchableOpacity>
                 </View>
                 <Button color="#667F97"
@@ -48,9 +44,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 15
     },
-    bgText: {
-        color: 'white'
-    },
     textInput: {
         color: 'white',
         padding: 15,
@@ -70,34 +63,42 @@ const styles = StyleSheet.create({
     bg1: {
         alignItems: 'center',
         backgroundColor: '#090C08',
+        width: 50,
+        height: 50,
         padding: 10,
         margin: 10,
         marginBottom: 25,
-        borderRadius: 15
+        borderRadius: 25
     },
     bg2: {
         alignItems: 'center',
         backgroundColor: '#474056',
+        width: 50,
+        height: 50,
         padding: 10,
         margin: 10,
         marginBottom: 25,
-        borderRadius: 15
+        borderRadius: 25
     },
     bg3: {
         alignItems: 'center',
         backgroundColor: '#B79880',
+        width: 50,
+        height: 50,
         padding: 10,
         margin: 10,
         marginBottom: 25,
-        borderRadius: 15
+        borderRadius: 25
     },
     bg4: {
         alignItems: 'center',
         backgroundColor: '#8DA7C8',
+        width: 50,
+        height: 50,
         padding: 10,
         margin: 10,
         marginBottom: 25,
-        borderRadius: 15
+        borderRadius: 25
     }
 });
 
