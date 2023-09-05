@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ImageBackground, StyleSheet, View, Text, Button, TextInput, TouchableOpacity } from 'react-native';
+import { ImageBackground, KeyboardAvoidingView, StyleSheet, View, Text, Button, TextInput, TouchableOpacity } from 'react-native';
 
 const Start = ({ navigation }) => {
     const [name, setName] = useState('');
@@ -32,6 +32,7 @@ const Start = ({ navigation }) => {
                     onPress={() => navigation.navigate('Chat', { name: name, colour: colour })}
                 />
             </ImageBackground>
+            {Platform.OS === "ios" ? <KeyboardAvoidingView behavior="padding" /> : null}
         </View >
     );
 }
