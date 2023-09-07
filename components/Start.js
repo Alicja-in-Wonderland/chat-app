@@ -1,9 +1,23 @@
 import { useState } from 'react';
-import { ImageBackground, KeyboardAvoidingView, StyleSheet, View, Text, Button, TextInput, TouchableOpacity } from 'react-native';
+import { Alert, ImageBackground, KeyboardAvoidingView, StyleSheet, View, Text, Button, TextInput, TouchableOpacity } from 'react-native';
+import { getAuth, signInAnonymously } from "firebase/auth";
 
 const Start = ({ navigation }) => {
+    const auth = getAuth();
     const [name, setName] = useState('');
     const [colour, setColour] = useState('');
+
+    const signInUser = () => {
+        signInAnonymously(auth)
+            .then(result => {
+                //Passes name and colour data to Chat screen on transition
+                navigation.navigate("Chat", { userID: result.user.uid, name: name, colour: colour });
+                Alert.alert("Signed in Successfully!");
+            })
+            .catch((error) => {
+                Alert.alert("Unable to sign in, try later again.");
+            })
+    }
 
     return (
         <View style={{ flex: 1 }}>
@@ -28,8 +42,7 @@ const Start = ({ navigation }) => {
                 </View>
                 <Button color="#667F97"
                     title="Go to chatroom"
-                    //Passes name and colour data to Chat screen on transition
-                    onPress={() => navigation.navigate('Chat', { name: name, colour: colour })}
+                    onPress={signInUser}
                 />
             </ImageBackground>
             {Platform.OS === "ios" ? <KeyboardAvoidingView behavior="padding" /> : null}
