@@ -57,9 +57,7 @@ const Chat = ({ db, route, navigation }) => {
                 //Adds the renderBubble prop
                 renderBubble={renderBubble}
                 onSend={messages => onSend(messages)}
-                user={{
-                    _id: 1
-                }}
+                user={{ _id: userID, name }}
             />
             {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
         </View>
