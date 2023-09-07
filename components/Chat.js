@@ -2,42 +2,40 @@ import { Bubble, GiftedChat } from "react-native-gifted-chat";
 import { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { KeyboardAvoidingView, Platform } from "react-native";
+import { addDoc, onSnapshot, collection, orderBy, query } from "firebase/firestore";
 
-const Chat = ({ route, navigation }) => {
-    //Gets name and colour selection from Start component
-    const { name } = route.params;
-    const { colour } = route.params;
+const Chat = ({ db, route, navigation }) => {
+    //Gets user ID, name and colour selection from Start component
+    const { name, colour, userID } = route.params;
     const [messages, setMessages] = useState([]);
     //Custom function called when a user sends a message
     const onSend = (newMessages) => {
-        setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages))
+        addDoc(collection(db, "messages"), newMessages[0])
     }
-    //Adds two preloaded messages
-    useEffect(() => {
-        setMessages([
-            {
-                _id: 1,
-                text: "Hello!",
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: "React Native",
-                    avatar: "https://placeimg.com/140/140/any",
-                },
-            },
-            {
-                _id: 2,
-                text: "Welcome! You've entered the chat",
-                createdAt: new Date(),
-                system: true,
-            },
-        ]);
-    }, []);
 
     useEffect(() => {
+        // Sets screen title according to the name entered
         navigation.setOptions({ title: name });
+        //Fetches messages from the database in real time
+        const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+        const unsubMessages = onSnapshot(q, (docs) => {
+            let newMessages = [];
+            docs.forEach(doc => {
+                newMessages.push({
+                    id: doc.id,
+                    ...doc.data(),
+                    createdAt: new Date(doc.data().createdAt.toMillis())
+                })
+            })
+            setMessages(newMessages);
+        })
+        //Cleans up the returned function
+        return () => {
+            if (unsubMessages) unsubMessages();
+        }
     }, []);
-    // Returns an altered version of Gifted Chat’s speech bubble
+
+    //Returns an altered version of Gifted Chat’s speech bubble
     const renderBubble = (props) => {
         return <Bubble
             {...props}
