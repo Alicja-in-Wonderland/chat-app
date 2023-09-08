@@ -5,7 +5,7 @@ import { KeyboardAvoidingView, Platform } from "react-native";
 import { addDoc, onSnapshot, collection, orderBy, query } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Chat = ({ db, route, navigation }) => {
+const Chat = ({ db, isConnected, route, navigation }) => {
     //Gets user ID, name and colour selection from Start component
     const { name, colour, userID } = route.params;
     const [messages, setMessages] = useState([]);
@@ -14,27 +14,58 @@ const Chat = ({ db, route, navigation }) => {
         addDoc(collection(db, "messages"), newMessages[0])
     }
 
+    let unsubMessages;
+
     useEffect(() => {
         // Sets screen title according to the name entered
         navigation.setOptions({ title: name });
-        //Fetches messages from the database in real time
-        const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
-        const unsubMessages = onSnapshot(q, (docs) => {
-            let newMessages = [];
-            docs.forEach(doc => {
-                newMessages.push({
-                    id: doc.id,
-                    ...doc.data(),
-                    createdAt: new Date(doc.data().createdAt.toMillis())
+        /**
+        * If the user is connected to the internet, register a listener to the database
+        * to read messages. If the user is offline, load messages from offline storage.
+        */
+        if (isConnected === true) {
+            // Unregister current onSnapshot() listener to avoid registering multiple
+            // listeners when useEffect code is re-executed.
+            if (unsubMessages) unsubMessages();
+            unsubMessages = null;
+
+            //Fetches messages from the database in real time
+            const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+            const unsubMessages = onSnapshot(q, (docs) => {
+                let newMessages = [];
+                docs.forEach(doc => {
+                    newMessages.push({
+                        id: doc.id,
+                        ...doc.data(),
+                        createdAt: new Date(doc.data().createdAt.toMillis())
+                    })
                 })
+                cacheMessages(newMessages);
+                setMessages(newMessages);
             })
-            setMessages(newMessages);
-        })
+        } else {
+            loadCachedMessages();
+        }
         //Cleans up the returned function
         return () => {
             if (unsubMessages) unsubMessages();
         }
-    }, []);
+    }, [isConnected]);
+
+    // Get messages from offline storage
+    const loadCachedMessages = async () => {
+        const cachedMessages = (await AsyncStorage.getItem("messages")) || [];
+        setMessages(JSON.parse(cachedMessages));
+    };
+
+    //Save messages to offline storage
+    const cacheMessages = async (messagesToCache) => {
+        try {
+            await AsyncStorage.setItem("messages", JSON.stringify(messagesToCache));
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
 
     //Returns an altered version of Gifted Chat’s speech bubble
     const renderBubble = (props) => {
