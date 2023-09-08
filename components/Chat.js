@@ -1,4 +1,4 @@
-import { Bubble, GiftedChat } from "react-native-gifted-chat";
+import { Bubble, GiftedChat, InputToolbar } from "react-native-gifted-chat";
 import { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { KeyboardAvoidingView, Platform } from "react-native";
@@ -67,6 +67,14 @@ const Chat = ({ db, isConnected, route, navigation }) => {
         }
     };
 
+    const renderInputToolbar = (props) => {
+        if (isConnected) {
+            return <InputToolbar {...props} />;
+        } else {
+            return null;
+        }
+    };
+
     //Returns an altered version of Gifted Chat’s speech bubble
     const renderBubble = (props) => {
         return <Bubble
@@ -88,6 +96,7 @@ const Chat = ({ db, isConnected, route, navigation }) => {
                 messages={messages}
                 //Adds the renderBubble prop
                 renderBubble={renderBubble}
+                renderInputToolbar={renderInputToolbar}
                 onSend={messages => onSend(messages)}
                 user={{ _id: userID, name }}
             />
