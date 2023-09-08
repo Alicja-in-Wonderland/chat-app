@@ -1,6 +1,7 @@
 // Imports react Navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 // Imports the screens we want to navigate to
 import Start from './components/Start';
