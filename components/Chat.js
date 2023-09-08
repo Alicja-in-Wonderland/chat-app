@@ -38,8 +38,8 @@ const Chat = ({ db, isConnected, route, navigation }) => {
                         id: doc.id,
                         ...doc.data(),
                         createdAt: new Date(doc.data().createdAt.toMillis())
-                    })
-                })
+                    });
+                });
                 cacheMessages(newMessages);
                 setMessages(newMessages);
             })
