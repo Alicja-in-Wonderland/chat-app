@@ -66,7 +66,7 @@ const Chat = ({ db, isConnected, route, navigation }) => {
             console.log(error.message);
         }
     };
-
+    //Prevents Gifted Chat from rendering the InputToolbar when offline
     const renderInputToolbar = (props) => {
         if (isConnected) {
             return <InputToolbar {...props} />;
