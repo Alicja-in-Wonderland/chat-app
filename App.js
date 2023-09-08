@@ -1,6 +1,8 @@
 // Imports react Navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import { Alert } from 'react-native';
 import { useNetInfo } from '@react-native-community/netinfo';
 import { useEffect } from "react";
 

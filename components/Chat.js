@@ -31,7 +31,7 @@ const Chat = ({ db, isConnected, route, navigation }) => {
 
             //Fetches messages from the database in real time
             const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
-            const unsubMessages = onSnapshot(q, (docs) => {
+            unsubMessages = onSnapshot(q, (docs) => {
                 let newMessages = [];
                 docs.forEach(doc => {
                     newMessages.push({
