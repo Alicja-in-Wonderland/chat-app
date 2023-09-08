@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { KeyboardAvoidingView, Platform } from "react-native";
 import { addDoc, onSnapshot, collection, orderBy, query } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Chat = ({ db, route, navigation }) => {
     //Gets user ID, name and colour selection from Start component
