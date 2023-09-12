@@ -4,6 +4,8 @@ import { StyleSheet, View } from 'react-native';
 import { KeyboardAvoidingView, Platform } from "react-native";
 import { addDoc, onSnapshot, collection, orderBy, query } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomActions from './CustomActions';
+import MapView from 'react-native-maps';
 
 const Chat = ({ db, isConnected, route, navigation }) => {
     //Gets user ID, name and colour selection from Start component
@@ -29,7 +31,7 @@ const Chat = ({ db, isConnected, route, navigation }) => {
             if (unsubMessages) unsubMessages();
             unsubMessages = null;
 
-            //Fetches messages from the database in real time
+            //Fetches messages from the database in real-time
             const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
             unsubMessages = onSnapshot(q, (docs) => {
                 let newMessages = [];
@@ -52,13 +54,13 @@ const Chat = ({ db, isConnected, route, navigation }) => {
         }
     }, [isConnected]);
 
-    // Get messages from offline storage
+    //Gets messages from offline storage
     const loadCachedMessages = async () => {
         const cachedMessages = (await AsyncStorage.getItem("messages")) || [];
         setMessages(JSON.parse(cachedMessages));
     };
 
-    //Save messages to offline storage
+    //Saves messages to offline storage
     const cacheMessages = async (messagesToCache) => {
         try {
             await AsyncStorage.setItem("messages", JSON.stringify(messagesToCache));
@@ -89,6 +91,12 @@ const Chat = ({ db, isConnected, route, navigation }) => {
             }}
         />
     }
+
+    //Creates a circle button
+    const renderCustomActions = (props) => {
+        return <CustomActions {...props} />;
+    };
+
     //Renders the chat interface
     return (
         <View style={[styles.container, { backgroundColor: colour }]}>
@@ -98,6 +106,7 @@ const Chat = ({ db, isConnected, route, navigation }) => {
                 renderBubble={renderBubble}
                 renderInputToolbar={renderInputToolbar}
                 onSend={messages => onSend(messages)}
+                renderActions={renderCustomActions}
                 user={{ _id: userID, name }}
             />
             {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
