@@ -89,6 +89,9 @@ const Chat = ({ db, isConnected, route, navigation }) => {
                     backgroundColor: "#F4E7C5"
                 }
             }}
+            textStyle={{
+                left: { color: "#fff" },
+            }}
         />
     }
 
@@ -96,6 +99,30 @@ const Chat = ({ db, isConnected, route, navigation }) => {
     const renderCustomActions = (props) => {
         return <CustomActions {...props} />;
     };
+
+    //Renders a map in a message buble
+    const renderCustomView = (props) => {
+        const { currentMessage } = props;
+        if (currentMessage.location) {
+            return (
+                <MapView
+                    style={{
+                        width: 150,
+                        height: 100,
+                        borderRadius: 13,
+                        margin: 3
+                    }}
+                    region={{
+                        latitude: currentMessage.location.latitude,
+                        longitude: currentMessage.location.longitude,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    }}
+                />
+            );
+        }
+        return null;
+    }
 
     //Renders the chat interface
     return (
@@ -107,6 +134,7 @@ const Chat = ({ db, isConnected, route, navigation }) => {
                 renderInputToolbar={renderInputToolbar}
                 onSend={messages => onSend(messages)}
                 renderActions={renderCustomActions}
+                renderCustomView={renderCustomView}
                 user={{ _id: userID, name }}
             />
             {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}

@@ -15,6 +15,7 @@ const Stack = createNativeStackNavigator();
 
 import { initializeApp } from "firebase/app";
 import { disableNetwork, enableNetwork, getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBHqJnOicoS9mtSvnCVQsDHyqQm_evFCBM",
@@ -25,11 +26,14 @@ const firebaseConfig = {
   appId: "1:291357923119:web:c684e33f65c09e135c73da"
 };
 
-// Initialise Firebase
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
+
+// Initialize Firebase Storage handler
+const storage = getStorage(app);
 
 // The app’s main Chat component that renders the chat UI
 const App = () => {
@@ -49,7 +53,7 @@ const App = () => {
       <Stack.Navigator initialRouteName="Start">
         <Stack.Screen name="Welcome!" component={Start} />
         <Stack.Screen name="Chat" >
-          {props => <Chat isConnected={connectionStatus.isConnected} db={db} {...props} />}
+          {props => <Chat isConnected={connectionStatus.isConnected} db={db} storage={storage} {...props} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
