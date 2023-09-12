@@ -81,7 +81,9 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage }) => {
     }
 
     return (
-        <TouchableOpacity style={styles.container} onPress={onActionPress}>
+        <TouchableOpacity style={styles.container} onPress={onActionPress} accessibilityLabel="More options"
+            accessibilityHint="Lets you choose to send an image, a photo taken with your camera or your geolocation."
+            accessibilityRole="button">
             <View style={[styles.wrapper, wrapperStyle]}>
                 <Text style={[styles.iconText, iconTextStyle]}>+</Text>
             </View>
