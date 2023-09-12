@@ -7,7 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomActions from './CustomActions';
 import MapView from 'react-native-maps';
 
-const Chat = ({ db, isConnected, route, navigation }) => {
+const Chat = ({ db, isConnected, route, storage, navigation }) => {
     //Gets user ID, name and colour selection from Start component
     const { name, colour, userID } = route.params;
     const [messages, setMessages] = useState([]);
@@ -90,14 +90,14 @@ const Chat = ({ db, isConnected, route, navigation }) => {
                 }
             }}
             textStyle={{
-                left: { color: "#fff" },
+                left: { color: "#000" },
             }}
         />
     }
 
     //Creates a circle button
     const renderCustomActions = (props) => {
-        return <CustomActions {...props} />;
+        return <CustomActions storage={storage} {...props} />;
     };
 
     //Renders a map in a message buble

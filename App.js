@@ -26,13 +26,13 @@ const firebaseConfig = {
   appId: "1:291357923119:web:c684e33f65c09e135c73da"
 };
 
-// Initialize Firebase
+// Initializes Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Cloud Firestore and get a reference to the service
+// Initializes Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
-// Initialize Firebase Storage handler
+// Initializs Firebase Storage handler
 const storage = getStorage(app);
 
 // The app’s main Chat component that renders the chat UI
