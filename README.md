@@ -1,10 +1,9 @@
 # chat-app
 
-![Screenshot 2023-09-12 at 21 57 36](https://github.com/Alicja-in-Wonderland/chat-app/assets/129612148/7b06cd72-f916-4122-b573-3560d5beb7f0)
+A mobile app that provides users with a chat interface and options to share images and their location. 
 
-
-## Project Description
-A mobile app that provides users with a chat interface and options to share images and their location.
+## Screenshots
+![chat-app-screenshot](https://github.com/Alicja-in-Wonderland/chat-app/assets/129612148/1adff643-c5c3-4baa-8173-bfe4c56d5e80)
 
 ## Tech stack
 - React Native
